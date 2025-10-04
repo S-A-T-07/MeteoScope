@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>METEOSCOPE</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Arya&family=Cambo&family=Charm:wght@400;700&family=Rubik+Dirt&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* Custom font classes using the imported Google Fonts */
+      .title-font {
+        /* METEOSCOPE: Rubik Dirt */
+        font-family: "Rubik Dirt", sans-serif;
+        letter-spacing: 0.1em;
+      }
+      .subtitle-font {
+        /* Like a telescope for weather: Charm */
+        font-family: "Charm", cursive;
+      }
+      .nav-font {
+        /* Home, Contact, About: Arya */
+        font-family: "Arya", sans-serif;
+      }
+      .button-font {
+        /* Get Start: Cambo */
+        font-family: "Cambo", serif;
+      }
+      /* Custom background and border styling */
+      .main-bg {
+        background-color: #0b0b0b; /* Very dark grey/black */
+      }
+      /* Frame Border Change: Bordered, Round, and in color #494949 */
+      .outer-border {
+        border: 8px solid #494949; /* White-grey border color */
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5) inset;
+      }
+    </style>
+  </head>
+  <body
+    class="main-bg text-white min-h-screen p-4 flex flex-col outer-border rounded-3xl overflow-hidden"
+  >
+    <header class="w-full flex justify-center py-4">
+      <nav class="flex space-x-12 text-lg font-medium nav-font">
+        <a href="#" class="hover:text-green-500 transition duration-300"
+          >Home</a
+        >
+        <a href="#" class="hover:text-green-500 transition duration-300"
+          >Contact</a
+        >
+        <a href="#" class="hover:text-green-500 transition duration-300"
+          >About</a
+        >
+      </nav>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-8">
+      <div
+        class="max-w-7xl w-full flex flex-col lg:flex-row items-center justify-between"
+      >
+        <div
+          class="flex flex-col items-center lg:items-start text-center lg:text-left mb-12 lg:mb-0"
+        >
+          <h1
+            class="title-font text-6xl md:text-8xl text-white mb-2 tracking-wider drop-shadow-lg"
+          >
+            METEOSCOPE
+          </h1>
+          <p
+            class="subtitle-font text-2xl md:text-3xl italic text-green-500 mb-8"
+          >
+            Like a telescope for weather
+          </p>
+          <button
+            id="startButton"
+            class="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-green-500 focus:ring-opacity-50 button-font"
+          >
+            Get Start
+          </button>
+        </div>
+
+        <div class="relative w-80 h-80 md:w-96 md:h-96">
+          <div
+            class="absolute inset-0 rounded-full border-[6px] border-gray-400 opacity-70 shadow-2xl shadow-gray-500/50"
+          ></div>
+
+          <img
+            src="./img/LOGO.png"
+            alt="Split nature and city landscape representing weather contrast"
+            class="w-full h-full object-cover rounded-full"
+          />
+        </div>
+      </div>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>
