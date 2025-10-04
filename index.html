@@ -1,138 +1,362 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>METEOSCOPE</title>
+    <title>METEOSCOPE - Animated Login/Signup</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="icon" type="image/png" href="favicon.png" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Arya&family=Cambo&family=Charm:wght@400;700&family=Rubik+Dirt&display=swap"
-      rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Arya&family=Cambo&family=Charm:wght@400;700&family=Rubik+Dirt&display=swap"
+        rel="stylesheet"
     />
 
     <style>
-      /* Custom font classes using the imported Google Fonts */
-      .title-font {
-        /* METEOSCOPE: Rubik Dirt */
-        font-family: "Rubik Dirt", sans-serif;
-        letter-spacing: 0.1em;
-      }
-      .subtitle-font {
-        /* Like a telescope for weather: Charm */
-        font-family: "Abhaya Libre";
-      }
-      .nav-font {
-        /* Home, Contact, About: Arya */
-        font-family: "Arya", sans-serif;
-      }
-      .button-font {
-        /* Get Start: Cambo */
-        font-family: "Cambo", serif;
-      }
+        /* Custom font classes using the imported Google Fonts */
+        .title-font {
+            /* METEOSCOPE: Rubik Dirt */
+            font-family: "Rubik Dirt", sans-serif;
+            letter-spacing: 0.1em;
+        }
+        .subtitle-font {
+            /* Like a telescope for weather: Charm */
+            font-family: "Abhaya Libre";
+        }
+        .nav-font {
+            /* Contact, About, Labels: Arya */
+            font-family: "Arya", sans-serif;
+        }
+        .button-font {
+            /* Get Start, Login, Signup buttons: Cambo */
+            font-family: "Cambo", serif;
+        }
 
-      /* ------------------ VIDEO BACKGROUND STYLES ------------------ */
-      #video-background {
-        position: fixed;
-        top: 0;
-        left: 0;
-        min-width: 100%;
-        min-height: 100%;
-        width: auto;
-        height: auto;
-        z-index: -100; /* Pushes it below all content */
-        object-fit: cover; /* Ensures the video covers the entire screen */
-      }
+        /* ------------------ VIDEO BACKGROUND STYLES ------------------ */
+        #video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100; /* Pushes it below all content */
+            object-fit: cover; /* Ensures the video covers the entire screen */
+        }
+        
+        /* ------------------ ANIMATION STYLES (UPDATED FOR FADE) ------------------ */
+        .app-views-container {
+            position: relative;
+            /* Match the height of the parent body/frame */
+            height: calc(100vh - 8px); /* 4px padding top/bottom of outer-frame */
+            width: 100%;
+            overflow: hidden; 
+            /* Flex display is no longer strictly necessary, but doesn't hurt */
+            display: flex; 
+        }
 
+        .page-view {
+            /* Positions the view within the container, overlapping all others */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            
+            /* Animation Transition: ONLY FADE OPACITY */
+            transition: opacity 0.4s ease-in-out; 
+            
+            /* Hidden State */
+            opacity: 0;
+            pointer-events: none; /* Disable interaction when hidden */
+            
+            /* Flex properties for content centering */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Active State: On-screen, visible */
+        .page-view.active {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 10;
+        }
+        
+        /* Reset initial state for the landing page */
+        #landing-view {
+            z-index: 10; /* Ensure landing page starts on top */
+        }
+
+        /* Ensure form views stretch */
+        #login-view main, #signup-view main {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            width: 100%;
+        }
     </style>
-  </head>
+</head>
 
-  <body class="text-white min-h-screen relative">
+<body class="text-white min-h-screen relative">
+    <!-- Video Background (Retained from your original code) -->
     <video autoplay muted loop id="video-background">
-      <source src="./img/videoplayback.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
+        <!-- NOTE: Ensure './img/videoplayback.mp4' exists in your environment -->
+        <source src="./img/videoplayback.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
     </video>
 
-    <div class="outer-frame p-4 flex flex-col min-h-screen relative z-10">
-      <header class="w-full flex justify-center py-4">
-        <div class="flex justify-between items-center w-full max-w-8xl px-8">
-          <a
-            href="#"
-            class="h-12 w-12 border-2 border-white rounded-full flex items-center justify-center drop-shadow-lg bg-white bg-opacity-10 backdrop-blur-sm cursor-pointer p-0.5 overflow-hidden"
-            title="Meteoscope Home"
-          >
-            <!-- Use your local logo.png file. Added a placeholder for preview purposes. -->
-            <img
-              src="./img/LOGO.png"
-              alt="Meteoscope Logo"
-              class="w-full h-full object-cover rounded-full"
-            />
-          </a>
+    <div class="outer-frame p-1 flex flex-col min-h-screen relative z-10">
+        
+        <!-- FIXED HEADER (Common to all views) -->
+        <header class="w-full flex justify-center py-4 px-3">
+            <!-- Added relative class for absolute positioning of the navigation -->
+            <div class="flex justify-between items-center w-full max-w-8xl relative">
+                
+                <!-- Logo Link (Always navigates Home) -->
+                <a
+                    href="#"
+                    onclick="navigate('landing-view')"
+                    class="h-12 w-12 border-2 border-white rounded-full flex items-center justify-center drop-shadow-lg bg-white bg-opacity-10 backdrop-blur-sm cursor-pointer p-0.5 overflow-hidden z-20"
+                    title="Meteoscope Home"
+                >
+                    <!-- NOTE: Ensure './img/LOGO.png' exists in your environment -->
+                    <img
+                        src="./img/LOGO.png"
+                        alt="Meteoscope Logo"
+                        class="w-full h-full object-cover rounded-full"
+                    />
+                </a>
 
-          <nav
-            class="flex space-x-12 text-lg font-medium nav-font mx-auto text-white"
-          >
-            <a
-              href="#"
-              class="hover:text-gray-400 transition duration-300 drop-shadow-md"
-              >Home</a
-            >
-            <a
-              href="#"
-              class="hover:text-gray-400 transition duration-300 drop-shadow-md"
-              >Contact</a
-            >
-            <a
-              href="#"
-              class="hover:text-gray-400 transition duration-300 drop-shadow-md"
-              >About</a
-            >
-          </nav>
-          
-          <a
-    href="login.html" 
-    class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-black font-semibold py-1 px-4 rounded-full shadow-lg transition duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 button-font text-sm"
->
-    Login
-</a>
+                <!-- Navigation Links - ABSOLUTELY CENTERED -->
+                <!-- Removed mx-auto, added absolute centering classes -->
+                <nav class="hidden sm:flex space-x-8 text-lg font-medium nav-font text-white absolute left-1/2 transform -translate-x-1/2 z-10">
+                    <a href="#" class="hover:text-gray-400 transition duration-300 drop-shadow-md">Contact</a>
+                    <a href="#" class="hover:text-gray-400 transition duration-300 drop-shadow-md">About</a>
+                </nav>
+                
+                <!-- Action Buttons: CALL JAVASCRIPT FOR FADE NAVIGATION -->
+                <div class="flex space-x-2 z-20">
+                    <a
+                        href="#" 
+                        onclick="navigate('login-view')"
+                        class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-black font-semibold py-1 px-4 rounded-full shadow-lg transition duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 button-font text-sm"
+                    >
+                        Login
+                    </a>
+                    <a 
+                        href="#" 
+                        onclick="navigate('signup-view')"
+                        class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-black font-semibold py-1 px-4 rounded-full shadow-lg transition duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 button-font text-sm"
+                    >
+                        Signup
+                    </a>
+                </div>
+            </div>
+        </header>
 
-           <a 
-        href="signup.html" 
-        class="ml-1 bg-transparent border-2 border-white text-white hover:bg-white hover:text-black font-semibold py-1 px-4 rounded-full shadow-lg transition duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 button-font text-sm"
-    >
-        Signup
-    </a>
+        <!-- APP VIEWS CONTAINER -->
+        <!-- This container holds all three pages and manages the fade transition -->
+        <div class="app-views-container">
+
+            <!-- 1. LANDING PAGE VIEW (index.html content) -->
+            <section id="landing-view" class="page-view active">
+                <main class="flex-grow flex items-center justify-center p-8 relative">
+                    <div class="flex flex-col items-center justify-center text-center max-w-xl w-full">
+                        <h1
+                            class="title-font text-6xl md:text-8xl text-white mb-2 tracking-wider"
+                            style="
+                                text-shadow: 0 4px 6px rgba(0, 0, 0, 0.8),
+                                    0 1px 3px rgba(0, 0, 0, 0.6);
+                            "
+                        >
+                            METEOSCOPE
+                        </h1>
+                        <p
+                            class="subtitle-font text-2xl md:text-3xl italic text-white mb-8"
+                            style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7)"
+                        >
+                            Like a telescope for weather
+                        </p>
+                        <button
+                            onclick="navigate('login-view')"
+                            class="bg-gray-100 hover:bg-gray-300 text-black font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 button-font"
+                        >
+                            Get Started
+                        </button>
+                    </div>
+                </main>
+            </section>
+
+            <!-- 2. LOGIN PAGE VIEW (login.html content) -->
+            <section id="login-view" class="page-view">
+                <main class="flex-grow flex items-center justify-center p-8 relative z-10">
+                    <div class="w-full max-w-md">
+                        <div class="bg-gray-800 shadow-xl rounded-xl px-10 pt-8 pb-10 mb-4 bg-opacity-35 backdrop-blur-sm border border-gray-700">
+                            <h2 class="title-font text-4xl text-center mb-8 tracking-wider">LOGIN</h2>
+                            <form action="#" method="POST">
+                                <div class="mb-6">
+                                    <label class="block text-gray-300 text-sm font-bold mb-2 nav-font" for="login-email">
+                                        Email
+                                    </label>
+                                    <input
+                                        class="shadow appearance-none border border-gray-600 rounded w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 bg-opacity-70 placeholder-gray-400"
+                                        id="login-email"
+                                        type="email"
+                                        placeholder="user@gmail.com"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="mb-8">
+                                    <label class="block text-gray-300 text-sm font-bold mb-2 nav-font" for="login-password">
+                                        Password
+                                    </label>
+                                    <input
+                                        class="shadow appearance-none border border-gray-600 rounded w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 bg-opacity-70 placeholder-gray-400"
+                                        id="login-password"
+                                        type="password"
+                                        placeholder="********"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="flex items-center justify-center">
+                                    <button
+                                        class="bg-white hover:bg-gray-300 text-black font-semibold py-2 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 button-font w-full"
+                                        type="submit"
+                                    >
+                                        Login
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <p class="text-center text-gray-200 text-sm">
+                            <a class="text-white hover:text-blue-300 font-bold drop-shadow-md nav-font" href="#">
+                                Forgot Password?
+                            </a>
+                            <span class="mx-2">|</span>
+                            Don't have an account?
+                            <!-- Animated Link to Signup -->
+                            <a class="text-white hover:text-blue-300 font-bold drop-shadow-md nav-font" href="#" onclick="navigate('signup-view')">
+                                Register
+                            </a>
+                        </p>
+                    </div>
+                </main>
+            </section>
+            
+            <!-- 3. SIGNUP PAGE VIEW (signup.html content) -->
+            <section id="signup-view" class="page-view">
+                <main class="flex-grow flex items-center justify-center p-8 relative z-10">
+                    <div class="w-full max-w-md">
+                        <div class="bg-gray-800 shadow-xl rounded-xl px-10 pt-8 pb-10 mb-4 bg-opacity-35 backdrop-blur-sm border border-gray-700">
+                            <h2 class="title-font text-4xl text-center mb-8 tracking-wider">SIGNUP</h2>
+                            <form action="#" method="POST">
+                                <div class="mb-4">
+                                    <label class="block text-gray-300 text-sm font-bold mb-2 nav-font" for="signup-name">
+                                        Full Name
+                                    </label>
+                                    <input
+                                        class="shadow appearance-none border border-gray-600 rounded w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 bg-opacity-70 placeholder-gray-400"
+                                        id="signup-name"
+                                        type="text"
+                                        placeholder="Your Full Name"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="mb-4">
+                                    <label class="block text-gray-300 text-sm font-bold mb-2 nav-font" for="signup-email">
+                                        Email
+                                    </label>
+                                    <input
+                                        class="shadow appearance-none border border-gray-600 rounded w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 bg-opacity-70 placeholder-gray-400"
+                                        id="signup-email"
+                                        type="email"
+                                        placeholder="user@gmail.com"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="mb-8">
+                                    <label class="block text-gray-300 text-sm font-bold mb-2 nav-font" for="signup-password">
+                                        Password
+                                    </label>
+                                    <input
+                                        class="shadow appearance-none border border-gray-600 rounded w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 bg-opacity-70 placeholder-gray-400"
+                                        id="signup-password"
+                                        type="password"
+                                        placeholder="********"
+                                        required
+                                    >
+                                </div>
+
+                                <div class="flex items-center justify-center">
+                                    <button
+                                        class="bg-white hover:bg-gray-300 text-black font-semibold py-2 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 button-font w-full"
+                                        type="submit"
+                                    >
+                                        Sign Up
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <p class="text-center text-gray-200 text-sm mt-4">
+                            Already have an account? 
+                            <!-- Animated Link to Login -->
+                            <a class="text-white hover:text-blue-300 font-bold drop-shadow-md nav-font" href="#" onclick="navigate('login-view')">
+                                Login Here
+                            </a>
+                        </p>
+                    </div>
+                </main>
+            </section>
         </div>
-      </header>
-
-      <main class="flex-grow flex items-center justify-center p-8 relative">
-        <div
-          class="flex flex-col items-center justify-center text-center max-w-xl w-full"
-        >
-          <h1
-            class="title-font text-6xl md:text-8xl text-white mb-2 tracking-wider"
-            style="
-              text-shadow: 0 4px 6px rgba(0, 0, 0, 0.8),
-                0 1px 3px rgba(0, 0, 0, 0.6);
-            "
-          >
-            METEOSCOPE
-          </h1>
-          <p
-            class="subtitle-font text-2xl md:text-3xl italic text-white mb-8"
-            style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7)"
-          >
-            Like a telescope for weather
-          </p>
-          <button
-            id="startButton"
-            class="bg-gray-100 hover:bg-gray-300 text-black font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 button-font"
-          >
-            Get Started
-          </button>
-        </div>
-      </main>
     </div>
-    <script src="script.js"></script>
-  </body>
+
+    <!-- JAVASCRIPT FOR FADE NAVIGATION -->
+    <script>
+        // Duration must match the CSS transition duration
+        const TRANSITION_DURATION = 400; 
+
+        /**
+         * Finds the current active page element.
+         * @returns {HTMLElement | null}
+         */
+        function getCurrentActivePage() {
+            return document.querySelector('.page-view.active');
+        }
+
+        /**
+         * Navigates to a new page with a fade animation.
+         * @param {string} targetPageId - The ID of the page to navigate to (e.g., 'login-view').
+         */
+        function navigate(targetPageId) {
+            // Prevent default link behavior
+            event.preventDefault(); 
+            
+            const currentPage = getCurrentActivePage();
+            const targetPage = document.getElementById(targetPageId);
+
+            if (!currentPage || !targetPage || currentPage === targetPage) {
+                return;
+            }
+
+            // 1. Start fade out: Remove 'active' class from current page
+            currentPage.classList.remove('active');
+            
+            // 2. Wait for the fade-out to complete (TRANSITION_DURATION), 
+            // then trigger the fade-in on the target page.
+            setTimeout(() => {
+                // Add 'active' class to the target page to trigger fade-in
+                targetPage.classList.add('active');
+            }, TRANSITION_DURATION); 
+        }
+    </script>
+</body>
 </html>
