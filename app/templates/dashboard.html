@@ -39,53 +39,6 @@
         opacity: 0.9; /* Slightly dim the background for better text visibility */
       }
 
-<<<<<<< HEAD
-<form method="POST">
-    <label for="very_hot">Very Hot (In Degree Celsius):</label>
-  <input
-    type="range"
-    name="very_hot"
-    id="very_hot"
-    min="20"
-    max="100"
-    step="1"
-    value="35"
-    oninput="updateHotValue(this.value)"
-    required
-  />
-    <span id="hot_value">35</span>°C<br /><br />
-
-    <label for="very_cold">Very Cold(In Degrees Celsius):</label>  
-  <input
-    type="range"
-    name="very_cold"
-    id="very_cold"
-    min="-30"
-    max="20"
-    step="1"
-    value="-10"
-    oninput="updateColdValue(this.value)"
-    required
-  />
-    <span id="cold_value">-10</span>°C<br /><br />
-      <label>Very Windy(In kmph):</label>  
-  <input type="number" name="very_windy" required /><br /><br />
-
-    <label>Very Wet(In Percentage):</label>  
-  <input type="number" name="very_wet" required /><br /><br />
-
-    <button type="submit">Save</button>  
-  <script>
-    function updateHotValue(val) {
-      document.getElementById("hot_value").innerText = val;
-    }
-
-    function updateColdValue(val) {
-      document.getElementById("cold_value").innerText = val;
-    }
-  </script>
-</form>
-=======
       /* Customize range slider appearance (for modern look) */
       input[type="range"] {
         -webkit-appearance: none;
@@ -135,7 +88,6 @@
         color: #fca311; /* Warm gold/sun color */
         text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
       }
->>>>>>> 58e043e9e0520346f9df7025116c4f42cd981d50
 
       .logout-link {
         color: #d1d5db;
