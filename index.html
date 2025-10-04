@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>METEOSCOPE</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="icon" type="image/png" href="favicon.png" />
     <link
       href="https://fonts.googleapis.com/css2?family=Arya&family=Cambo&family=Charm:wght@400;700&family=Rubik+Dirt&display=swap"
       rel="stylesheet"
@@ -44,11 +44,6 @@
         object-fit: cover; /* Ensures the video covers the entire screen */
       }
 
-      .outer-frame {
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.5) inset;
-        /* Semi-transparent dark background for the frame to allow video to show through slightly */
-        background-color: rgba(11, 11, 11, 0.1);
-      }
     </style>
   </head>
 
@@ -58,63 +53,78 @@
       Your browser does not support the video tag.
     </video>
 
-    <div class="content-overlay"></div>
-
     <div class="outer-frame p-4 flex flex-col min-h-screen relative z-10">
-     <header class="w-full flex justify-center py-4">
-    <div class="flex justify-between items-center w-full max-w-8xl px-8">
-         <a href="#" 
+      <header class="w-full flex justify-center py-4">
+        <div class="flex justify-between items-center w-full max-w-8xl px-8">
+          <a
+            href="#"
             class="h-12 w-12 border-2 border-white rounded-full flex items-center justify-center drop-shadow-lg bg-white bg-opacity-10 backdrop-blur-sm cursor-pointer p-0.5 overflow-hidden"
             title="Meteoscope Home"
           >
             <!-- Use your local logo.png file. Added a placeholder for preview purposes. -->
-            <img 
-                src="./img/LOGO.png" 
-                onerror="this.onerror=null; this.src='https://placehold.co/40x40/000/FFF?text=M+Logo'" 
-                alt="Meteoscope Logo" 
-                class="w-full h-full object-cover rounded-full"
+            <img
+              src="./img/LOGO.png"
+              alt="Meteoscope Logo"
+              class="w-full h-full object-cover rounded-full"
             />
-          </a> 
+          </a>
 
-        <nav class="flex space-x-12 text-lg font-medium nav-font mx-auto text-white">
-            <a href="#" class="hover:text-gray-400 transition duration-300 drop-shadow-md">Home</a>
-            <a href="#" class="hover:text-gray-400 transition duration-300 drop-shadow-md">Contact</a>
-            <a href="#" class="hover:text-gray-400 transition duration-300 drop-shadow-md">About</a>
-        </nav>
-        
-        <button 
-            id="loginButton" 
+          <nav
+            class="flex space-x-12 text-lg font-medium nav-font mx-auto text-white"
+          >
+            <a
+              href="#"
+              class="hover:text-gray-400 transition duration-300 drop-shadow-md"
+              >Home</a
+            >
+            <a
+              href="#"
+              class="hover:text-gray-400 transition duration-300 drop-shadow-md"
+              >Contact</a
+            >
+            <a
+              href="#"
+              class="hover:text-gray-400 transition duration-300 drop-shadow-md"
+              >About</a
+            >
+          </nav>
+
+          <button
+            id="loginButton"
             class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-black font-semibold py-1 px-4 rounded-full shadow-lg transition duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 button-font text-sm"
-        >
+          >
             Login
-        </button>
-        
-    </div>
-</header>
+          </button>
+        </div>
+      </header>
 
-     <main class="flex-grow flex items-center justify-center p-8 relative">
-    <div
-      class="flex flex-col items-center justify-center text-center max-w-xl w-full"
-    >
-      <h1
-        class="title-font text-6xl md:text-8xl text-white mb-2 tracking-wider"
-        style="text-shadow: 0 4px 6px rgba(0, 0, 0, 0.8), 0 1px 3px rgba(0, 0, 0, 0.6);"
-      >
-        METEOSCOPE
-      </h1>
-      <p
-        class="subtitle-font text-2xl md:text-3xl italic text-white mb-8"
-        style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);"
-      >
-        Like a telescope for weather
-      </p>
-      <button
-        id="startButton"
-        class="bg-gray-100 hover:bg-gray-300 text-black font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 button-font"
-      >
-        Get Started </button>
-    </div>
-</main>
+      <main class="flex-grow flex items-center justify-center p-8 relative">
+        <div
+          class="flex flex-col items-center justify-center text-center max-w-xl w-full"
+        >
+          <h1
+            class="title-font text-6xl md:text-8xl text-white mb-2 tracking-wider"
+            style="
+              text-shadow: 0 4px 6px rgba(0, 0, 0, 0.8),
+                0 1px 3px rgba(0, 0, 0, 0.6);
+            "
+          >
+            METEOSCOPE
+          </h1>
+          <p
+            class="subtitle-font text-2xl md:text-3xl italic text-white mb-8"
+            style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7)"
+          >
+            Like a telescope for weather
+          </p>
+          <button
+            id="startButton"
+            class="bg-gray-100 hover:bg-gray-300 text-black font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 button-font"
+          >
+            Get Started
+          </button>
+        </div>
+      </main>
     </div>
     <script src="script.js"></script>
   </body>
