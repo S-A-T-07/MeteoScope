@@ -1,0 +1,23 @@
+<h2>Enter Weather Values</h2>
+
+{% if message %}
+<p>{{ message }}</p>
+{% endif %}
+
+<form method="POST">
+    <label>Very Hot:</label>
+    <input type="number" name="very_hot" required><br><br>
+
+    <label>Very Cold:</label>
+    <input type="number" name="very_cold" required><br><br>
+
+    <label>Very Windy:</label>
+    <input type="number" name="very_windy" required><br><br>
+
+    <label>Very Wet:</label>
+    <input type="number" name="very_wet" required><br><br>
+
+    <button type="submit">Save</button>
+</form>
+
+<a href="/logout">Logout</a>
