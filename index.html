@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>METEOSCOPE</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
+    <link rel="icon" type="image/png" href="favicon.png">
     <link
       href="https://fonts.googleapis.com/css2?family=Arya&family=Cambo&family=Charm:wght@400;700&family=Rubik+Dirt&display=swap"
       rel="stylesheet"
@@ -61,22 +61,36 @@
     <div class="content-overlay"></div>
 
     <div class="outer-frame p-4 flex flex-col min-h-screen relative z-10">
-      <header class="w-full flex justify-center py-4">
-        <nav class="flex space-x-12 text-lg font-medium nav-font">
-          <a href="#" class="hover:text-gray-400 transition duration-300"
-            >Home</a
+     <header class="w-full flex justify-center py-4">
+    <div class="flex justify-between items-center w-full max-w-8xl px-8">
+         <a href="#" 
+            class="h-12 w-12 border-2 border-white rounded-full flex items-center justify-center drop-shadow-lg bg-white bg-opacity-10 backdrop-blur-sm cursor-pointer p-0.5 overflow-hidden"
+            title="Meteoscope Home"
           >
-          <a href="#" class="hover:text-gray-400 transition duration-300"
-            >Contact</a
-          >
-          <a href="#" class="hover:text-gray-400 transition duration-300"
-            >About</a
-          >
-          <button id="loginButton" class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-black font-semibold py-1 px-4 rounded-full shadow-lg transition duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 button-font text-sm">
-        Login
-    </button>
+            <!-- Use your local logo.png file. Added a placeholder for preview purposes. -->
+            <img 
+                src="./img/LOGO.png" 
+                onerror="this.onerror=null; this.src='https://placehold.co/40x40/000/FFF?text=M+Logo'" 
+                alt="Meteoscope Logo" 
+                class="w-full h-full object-cover rounded-full"
+            />
+          </a> 
+
+        <nav class="flex space-x-12 text-lg font-medium nav-font mx-auto text-white">
+            <a href="#" class="hover:text-gray-400 transition duration-300 drop-shadow-md">Home</a>
+            <a href="#" class="hover:text-gray-400 transition duration-300 drop-shadow-md">Contact</a>
+            <a href="#" class="hover:text-gray-400 transition duration-300 drop-shadow-md">About</a>
         </nav>
-      </header>
+        
+        <button 
+            id="loginButton" 
+            class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-black font-semibold py-1 px-4 rounded-full shadow-lg transition duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 button-font text-sm"
+        >
+            Login
+        </button>
+        
+    </div>
+</header>
 
      <main class="flex-grow flex items-center justify-center p-8 relative">
     <div
