@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Create Team</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 25px 35px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        input[type="text"],
+        select {
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"] {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background: #0056b3;
+        }
+
+        .message {
+            margin-bottom: 15px;
+            color: green;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Create Team</h2>
+
+        {% if message %}
+        <div class="message">{{ message }}</div>
+        {% endif %}
+
+        <form method="POST">
+            <label>Team Name:</label><br>
+            <input type="text" name="team_name" placeholder="Enter team name" required><br>
+
+            <label>Select Users:</label><br>
+            <select name="user_ids" multiple size="5" required>
+                {% for user in users %}
+                <option value="{{ user.user_id }}">{{ user.name }}</option>
+                {% endfor %}
+            </select>
+            <p><small>Hold Ctrl (Windows) or Cmd (Mac) to select multiple users</small></p>
+
+            </select><br>
+
+            <input type="submit" value="Create Team">
+        </form>
+        <br><a href="/">🏠 Home</a>
+    </div>
+</body>
+
+</html>
