@@ -49,7 +49,7 @@ def login():
             )
             session["user"] = user.user.dict()  # Store user session
             # ✅ Redirect to dashboard after login
-            return redirect(url_for("dashboard"))
+            return redirect(url_for("auth.dashboard"))
         except Exception as e:
             return f"Login failed: {e}"
 
