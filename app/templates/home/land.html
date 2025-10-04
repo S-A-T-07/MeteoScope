@@ -2,10 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>METEOSCOPE - Animated Navigation</title>
+
+    <title>METEOSCOPE</title>
+
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="icon" type="image/png" href="favicon.png" />
+
+    <link
+      rel="icon"
+      type="image/png"
+      href="{{ url_for('static', filename='/img/LOGO.png') }}"
+    />
+
     <link
       href="https://fonts.googleapis.com/css2?family=Arya&family=Cambo&family=Charm:wght@400;700&family=Rubik+Dirt&display=swap"
       rel="stylesheet"
@@ -20,8 +29,6 @@
       }
       .subtitle-font {
         /* Like a telescope for weather: Charm */
-        /* NOTE: The original code used "Abhaya Libre" but imported "Charm" */
-        /* Using a fallback here, you might want to adjust the import/class */
         font-family: "Charm", cursive;
       }
       .nav-font {
@@ -90,15 +97,14 @@
         z-index: 10; /* Ensure landing page starts on top */
       }
 
-      /* Ensure form views stretch */
-      /* Ensure form views stretch */
+      /* Ensure main content area expands and centers the inner content */
       #login-view main,
-    #signup-view main,
-    #about-view main, /* <-- Target this line */
-    #contact-view main {
+            #signup-view main,
+            #about-view main, /* Corrected alignment for About page content */
+            #contact-view main {
         display: flex;
-        align-items: center; /* <-- This is the main culprit */
-        justify-content: center; /* <-- This is the main culprit */
+        align-items: center;
+        justify-content: center;
         flex-grow: 1;
         width: 100%;
       }
@@ -107,7 +113,10 @@
 
   <body class="text-white min-h-screen relative overflow-hidden">
     <video autoplay muted loop id="video-background">
-      <source src="./img/videoplayback.mp4" type="video/mp4" />
+      <source
+        src="{{ url_for('static', filename='img/videoplayback.mp4') }}"
+        type="video/mp4"
+      />
       Your browser does not support the video tag.
     </video>
 
@@ -118,12 +127,12 @@
         >
           <a
             href="#"
-            onclick="navigate('landing-view')"
+            onclick="navigate('landing-view', event)"
             class="h-12 w-12 border-2 border-white rounded-full flex items-center justify-center drop-shadow-lg bg-white bg-opacity-10 backdrop-blur-sm cursor-pointer p-0.5 overflow-hidden z-20"
             title="Meteoscope Home"
           >
             <img
-              src="./img/LOGO.png"
+              src="{{ url_for('static', filename='img/LOGO.png') }}"
               alt="Meteoscope Logo"
               class="w-full h-full object-cover rounded-full"
             />
@@ -134,13 +143,14 @@
           >
             <a
               href="#"
-              onclick="navigate('contact-view')"
+              onclick="navigate('contact-view', event)"
               class="hover:text-gray-400 transition duration-300 drop-shadow-md"
               >Contact</a
             >
+
             <a
               href="#"
-              onclick="navigate('about-view')"
+              onclick="navigate('about-view', event)"
               class="hover:text-gray-400 transition duration-300 drop-shadow-md"
               >About</a
             >
@@ -149,14 +159,15 @@
           <div class="flex space-x-2 z-20">
             <a
               href="#"
-              onclick="navigate('login-view')"
+              onclick="navigate('login-view', event)"
               class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-black font-semibold py-1 px-4 rounded-full shadow-lg transition duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 button-font text-sm"
             >
               Login
             </a>
+
             <a
               href="#"
-              onclick="navigate('signup-view')"
+              onclick="navigate('signup-view', event)"
               class="bg-transparent border-2 border-white text-white hover:bg-white hover:text-black font-semibold py-1 px-4 rounded-full shadow-lg transition duration-300 hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 button-font text-sm"
             >
               Signup
@@ -180,14 +191,16 @@
               >
                 METEOSCOPE
               </h1>
+
               <p
                 class="subtitle-font text-2xl md:text-3xl italic text-white mb-8"
                 style="text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7)"
               >
                 Like a telescope for weather
               </p>
+
               <button
-                onclick="navigate('login-view')"
+                onclick="navigate('login-view', event)"
                 class="bg-gray-100 hover:bg-gray-300 text-black font-semibold py-3 px-8 rounded-full shadow-lg transition duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 button-font"
               >
                 Get Started
@@ -207,6 +220,7 @@
                 <h2 class="title-font text-4xl text-center mb-8 tracking-wider">
                   LOGIN
                 </h2>
+
                 <form action="#" method="POST">
                   <div class="mb-6">
                     <label
@@ -215,6 +229,7 @@
                     >
                       Email
                     </label>
+
                     <input
                       class="shadow appearance-none border border-gray-600 rounded w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 bg-opacity-70 placeholder-gray-400"
                       id="login-email"
@@ -231,6 +246,7 @@
                     >
                       Password
                     </label>
+
                     <input
                       class="shadow appearance-none border border-gray-600 rounded w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 bg-opacity-70 placeholder-gray-400"
                       id="login-password"
@@ -263,7 +279,7 @@
                 <a
                   class="text-white hover:text-blue-300 font-bold drop-shadow-md nav-font"
                   href="#"
-                  onclick="navigate('signup-view')"
+                  onclick="navigate('signup-view', event)"
                 >
                   Register
                 </a>
@@ -283,6 +299,7 @@
                 <h2 class="title-font text-4xl text-center mb-8 tracking-wider">
                   SIGNUP
                 </h2>
+
                 <form action="#" method="POST">
                   <div class="mb-4">
                     <label
@@ -291,6 +308,7 @@
                     >
                       Full Name
                     </label>
+
                     <input
                       class="shadow appearance-none border border-gray-600 rounded w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 bg-opacity-70 placeholder-gray-400"
                       id="signup-name"
@@ -307,6 +325,7 @@
                     >
                       Email
                     </label>
+
                     <input
                       class="shadow appearance-none border border-gray-600 rounded w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 bg-opacity-70 placeholder-gray-400"
                       id="signup-email"
@@ -323,6 +342,7 @@
                     >
                       Password
                     </label>
+
                     <input
                       class="shadow appearance-none border border-gray-600 rounded w-full py-3 px-4 text-gray-100 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 bg-opacity-70 placeholder-gray-400"
                       id="signup-password"
@@ -348,7 +368,7 @@
                 <a
                   class="text-white hover:text-blue-300 font-bold drop-shadow-md nav-font"
                   href="#"
-                  onclick="navigate('login-view')"
+                  onclick="navigate('login-view', event)"
                 >
                   Login Here
                 </a>
@@ -365,13 +385,14 @@
               <h2 class="title-font text-4xl mb-4 tracking-wider">
                 CONTACT US
               </h2>
+
               <p class="nav-font text-lg text-gray-300">
                 We'd love to hear from you. Content for this page is coming
                 soon!
               </p>
 
               <button
-                onclick="navigate('landing-view')"
+                onclick="navigate('landing-view', event)"
                 class="mt-8 bg-white hover:bg-gray-300 text-black font-semibold py-2 px-8 rounded-full shadow-lg transition duration-300 button-font"
               >
                 Go Home
@@ -381,11 +402,12 @@
         </section>
 
         <section id="about-view" class="page-view">
-          <main class="pt-0 py-1 px-8 relative">
+          <main class="flex-grow flex items-center justify-center p-8 relative">
             <div
               class="bg-gray-800 shadow-xl rounded-xl px-10 py-6 mb-4 bg-opacity-35 backdrop-blur-sm border border-gray-700 max-w-lg w-full text-center"
             >
               <h2 class="title-font text-4xl mb-3 tracking-wider">ABOUT</h2>
+
               <p class="nav-font text-base text-gray-300">
                 METEOSCOPE is an advanced weather risk assessment tool, moving
                 beyond simple forecasts to give you personalized probability.
@@ -397,15 +419,17 @@
                 to plan with true foresight, transforming abstract weather data
                 into actionable risk intelligence.
               </p>
+
               <p class="subtitle-font text-4xl mt-4">
                 <img
-                  src="./img/LOGO.png"
+                  src="{{ url_for('static', filename='img/LOGO.png') }}"
                   alt="LOGO"
                   class="mt-4 mx-auto h-16 w-16"
                 />
               </p>
+
               <button
-                onclick="navigate('landing-view')"
+                onclick="navigate('landing-view', event)"
                 class="mt-6 bg-white hover:bg-gray-300 text-black font-semibold py-2 px-8 rounded-full shadow-lg transition duration-300 button-font"
               >
                 Go Home
@@ -419,20 +443,21 @@
     <script>
       // Duration must match the CSS transition duration
       const TRANSITION_DURATION = 400;
-
       /**
        * Finds the current active page element.
        * @returns {HTMLElement | null}
        */
+
       function getCurrentActivePage() {
         return document.querySelector(".page-view.active");
       }
-
       /**
        * Navigates to a new page with a fade animation.
        * @param {string} targetPageId - The ID of the page to navigate to (e.g., 'login-view').
+       * @param {Event} event - The DOM event object.
        */
-      function navigate(targetPageId) {
+
+      function navigate(targetPageId, event) {
         // Prevent default link behavior
         event.preventDefault();
 
@@ -448,6 +473,7 @@
 
         // 2. Wait for the fade-out to complete (TRANSITION_DURATION),
         // then trigger the fade-in on the target page.
+
         setTimeout(() => {
           // Add 'active' class to the target page to trigger fade-in
           targetPage.classList.add("active");
