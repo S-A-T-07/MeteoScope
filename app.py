@@ -50,6 +50,7 @@ def signup():
 # Login route
 
 
+# Login route
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
@@ -59,7 +60,8 @@ def login():
             user = supabase.auth.sign_in_with_password(
                 {"email": email, "password": password})
             session["user"] = user.user.dict()  # Store user session
-            return redirect(url_for("index"))
+            # ✅ Redirect to dashboard after login
+            return redirect(url_for("dashboard"))
         except Exception as e:
             return f"Login failed: {e}"
 
