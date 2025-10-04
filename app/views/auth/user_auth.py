@@ -27,7 +27,7 @@ def signup():
                 ).execute()
                 # print(f"user_id : {user.user.id}")
 
-            return "✅ Account created! <a href='/login'>Login here</a>"
+            return redirect(url_for("auth.prefer"))
         except Exception as e:
             return f"❌ Error creating account: {e}"
 
@@ -49,7 +49,7 @@ def login():
             )
             session["user"] = user.user.dict()  # Store user session
             # ✅ Redirect to prefer after login
-            return redirect(url_for("auth.prefer"))
+            return redirect(url_for("user.dashboard"))
         except Exception as e:
             return f"Login failed: {e}"
 
