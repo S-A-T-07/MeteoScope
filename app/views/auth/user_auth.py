@@ -48,19 +48,16 @@ def login():
                 {"email": email, "password": password}
             )
             session["user"] = user.user.dict()  # Store user session
-            # ✅ Redirect to dashboard after login
-            return redirect(url_for("auth.dashboard"))
+            # ✅ Redirect to prefer after login
+            return redirect(url_for("auth.prefer"))
         except Exception as e:
             return f"Login failed: {e}"
 
     return render_template("login.html")
 
 
-# Dashboard route
-
-
-@auth_bp.route("/dashboard", methods=["GET", "POST"])
-def dashboard():
+@auth_bp.route("/prefer", methods=["GET", "POST"])
+def prefer():
     if "user" not in session:
         return redirect(url_for("auth_bp.login"))
 
@@ -86,7 +83,7 @@ def dashboard():
         except Exception as e:
             message = f"❌ Error saving values: {e}"
 
-    return render_template("dashboard.html", message=message)
+    return render_template("prefer.html", message=message)
 
 
 # Logout route
