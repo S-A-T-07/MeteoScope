@@ -1,5 +1,4 @@
 from flask import Blueprint, redirect, render_template, request, session, url_for
-
 from app.supabase.supabase_client import supabase_client
 
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth")
@@ -12,49 +11,53 @@ def signup():
         email = request.form["email"]
         password = request.form["password"]
 
-        users = supabase_client.table("user").select("*").eq("email", email).execute()
-
+        # Check if email already exists in 'users' table
+        users = supabase_client.table("users").select("*").eq("email", email).execute()
         if users.data:
             return "❌ Error: Email already registered."
 
         try:
             # Create user in Supabase Auth
             user = supabase_client.auth.sign_up({"email": email, "password": password})
-            if user.user:
-                # Insert into user table using user_id (uuid)
-                supabase_client.table("user").insert(
-                    {
-                        "user_id": user.user.id,  # ✅ Correct column
-                        "email": email,
-                        "name": name,
-                    }
-                ).execute()
-                # print(f"user_id : {user.user.id}")
 
+            if user.user:
+                # Insert into 'users' table using the user_id (uuid)
+                supabase_client.table("users").insert({
+                    "user_id": user.user.id,
+                    "email": email,
+                    "name": name
+                }).execute()
+
+            # Redirect to preference page after signup
             return redirect(url_for("user.prefer"))
+
         except Exception as e:
             return f"❌ Error creating account: {e}"
 
+    # Render landing page (signup form)
     return render_template("home/land.html")
 
 
 # Login route
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
-    error_message = None  # initialize here
+    error_message = None
     if request.method == "POST":
         email = request.form["email"]
         password = request.form["password"]
+
         try:
             user = supabase_client.auth.sign_in_with_password(
                 {"email": email, "password": password}
             )
+
             if user.user is None:
-                # Invalid credentials
                 error_message = "Login failed: Invalid login credentials"
             else:
-                session["user"] = user.user.dict()  # Store user session
+                # Store user session
+                session["user"] = user.user.dict()
                 return redirect(url_for("user.dashboard"))
+
         except Exception as e:
             error_message = f"Login failed: {e}"
 
