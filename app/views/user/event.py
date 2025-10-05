@@ -11,14 +11,13 @@ def create_event():
         return redirect(url_for("login"))
 
     # Fetch all teams for dropdown
-    teams = supabase_client.table("team").select(
-        "id, team_name").execute().data
+    teams = supabase_client.table("team").select("id, team_name").execute().data
 
     if request.method == "POST":
         event_name = request.form["event_name"]
         event_date = request.form["event_date"]
         event_location = request.form["event_location"]
-        # team_id = request.form["event_select"]  # team selected from dropdown
+        team_id = request.form["team_select"]  # team selected from dropdown
         user_id = session["user"]["id"]
 
         try:
@@ -32,16 +31,28 @@ def create_event():
             user_name = profile.data[0]["name"] if profile.data else "Unknown"
 
             # Insert the event into Supabase
-            supabase_client.table("event").insert({
-                "event_name": event_name,
-                "event_date": event_date,
-                "event_location": event_location,
-                # "team_id": team_id,
-                "user_id": user_id,
-            }).execute()
+            supabase_client.table("event").insert(
+                {
+                    "event_name": event_name,
+                    "event_date": event_date,
+                    "event_location": event_location,
+                    "team_id": team_id,
+                    "user_id": user_id,
+                }
+            ).execute()
 
-            return render_template("create_event.html", teams=teams, message="✅ Event created successfully!")
+            return render_template(
+                "create_event.html",
+                teams=teams,
+                message="✅ Event created successfully!",
+            )
         except Exception as e:
-            return render_template("create_event.html", teams=teams, message=f"❌ Error creating event: {e}")
+            return render_template(
+                "create_event.html",
+                teams=teams,
+                message=f"❌ Error creating event: {e}",
+            )
 
-    return render_template("create_event.html", teams=teams)
+    return render_template(
+        "create_event.html", teams=teams, user_id=session["user"]["id"]
+    )
