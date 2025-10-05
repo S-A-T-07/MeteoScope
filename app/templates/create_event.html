@@ -1,80 +1,145 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Event</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configure Tailwind CSS with custom colors and font (Inter)
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    // Define colors based on the requested gradient
+                    colors: {
+                        'dark-purple': '#2c2c4a',
+                        'medium-gray': '#b6aec2',
+                        'warm-orange': '#f7bb7b',
+                        'primary-accent': '#5a5a8a', // Complementary color for buttons/links
+                    }
+                }
+            }
+        }
+    </script>
     <style>
+        /* Custom CSS for the full-screen gradient background and glass effect properties */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f7f9;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            /* Apply the requested background gradient */
+            background: linear-gradient(to bottom, 
+                #2c2c4a, /* dark-purple */
+                #b6aec2, /* medium-gray */
+                #f7bb7b  /* warm-orange */
+            );
+            background-attachment: fixed;
+            min-height: 100vh;
+            /* Flex utilities are handled by Tailwind classes in the body tag */
         }
 
-        .container {
-            background-color: white;
-            padding: 30px 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-            text-align: center;
-            width: 350px;
+        .glass-card {
+            /* Apply glassmorphism effect: high blur and transparency */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); /* For Safari support */
         }
-
-        h2 {
-            color: #333;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-            margin-bottom: 20px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 16px;
-        }
-
-        input[type="submit"] {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-
-        a {
-            color: #007bff;
-            text-decoration: none;
-            display: inline-block;
-            margin-top: 15px;
-        }
-
-        a:hover {
-            text-decoration: underline;
+        
+        /* Custom styling to ensure the dropdown arrow is visible and positioned correctly */
+        select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%235a5a8a'%3e%3cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
-<body>
-    <div class="container">
-        <h2>Create Event</h2>
-        <form method="POST">
-            <label>Event Name:</label><br>
-            <input type="text" name="event_name" placeholder="Enter event name" required><br>
-            <input type="submit" value="Save Event">
+<!-- Center the content using Tailwind flex classes -->
+<body class="font-sans flex justify-center items-center">
+    
+    <!-- Main Container: Glassmorphism Card -->
+    <div class="glass-card w-full max-w-md p-8 sm:p-10 mx-4 
+                bg-white/20 border border-white/30 rounded-xl 
+                shadow-2xl text-center transform transition-all duration-500 hover:scale-[1.02]">
+        
+        <h2 class="text-3xl font-bold mb-8 text-dark-purple">Create New Event</h2>
+
+        <form method="POST" class="space-y-6">
+            
+            <!-- Event Name Field -->
+            <div>
+                <label for="event_name" class="block text-left text-sm font-semibold mb-2 text-dark-purple">
+                    Event Name
+                </label>
+                <input type="text" id="event_name" name="event_name" placeholder="E.g., Quarterly Planning Workshop" required
+                       class="w-full px-4 py-3 bg-white/60 border border-white/50 
+                              rounded-lg focus:ring-primary-accent focus:border-primary-accent 
+                              transition duration-300 placeholder-gray-600 focus:outline-none 
+                              text-dark-purple shadow-inner">
+            </div>
+
+            <!-- Event Date Field (NEW) -->
+            <div>
+                <label for="event_date" class="block text-left text-sm font-semibold mb-2 text-dark-purple">
+                    Event Date
+                </label>
+                <!-- Using type="date" for native date picker -->
+                <input type="date" id="event_date" name="event_date" required
+                       class="w-full px-4 py-3 bg-white/60 border border-white/50 
+                              rounded-lg focus:ring-primary-accent focus:border-primary-accent 
+                              transition duration-300 focus:outline-none 
+                              text-dark-purple shadow-inner appearance-none">
+            </div>
+
+            <!-- Event Location Field (NEW) -->
+            <div>
+                <label for="event_location" class="block text-left text-sm font-semibold mb-2 text-dark-purple">
+                    Event Location
+                </label>
+                <input type="text" id="event_location" name="event_location" placeholder="E.g., Conference Room A or Remote Link" required
+                       class="w-full px-4 py-3 bg-white/60 border border-white/50 
+                              rounded-lg focus:ring-primary-accent focus:border-primary-accent 
+                              transition duration-300 placeholder-gray-600 focus:outline-none 
+                              text-dark-purple shadow-inner">
+            </div>
+            
+            <!-- Team Dropdown Field -->
+            <div>
+                <label for="team_select" class="block text-left text-sm font-semibold mb-2 text-dark-purple">
+                    Associated Team
+                </label>
+                <select id="team_select" name="team_select" required
+                        class="w-full px-4 py-3 bg-white/60 border border-white/50 
+                               rounded-lg focus:ring-primary-accent focus:border-primary-accent 
+                               transition duration-300 appearance-none focus:outline-none 
+                               text-dark-purple cursor-pointer shadow-inner">
+                    <option value="" disabled selected>Select a Team</option>
+                    <option value="just_me">Just Me</option> <!-- Added 'Just Me' -->
+                    <option value="marketing">Marketing Department</option>
+                    <option value="engineering">Engineering R&D</option>
+                    <option value="sales">Global Sales Force</option>
+                    <option value="hr">Human Resources</option>
+                </select>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" 
+                    class="w-full mt-8 py-3 bg-primary-accent text-white 
+                           font-bold rounded-lg shadow-xl hover:bg-dark-purple 
+                           transition duration-300 transform active:scale-95">
+                Save Event
+            </button>
         </form>
-        <a href="/">🏠 Back to Home</a>
+
+        <!-- Back Link -->
+        <div class="mt-8">
+            <a href="#" class="text-primary-accent hover:text-dark-purple font-semibold text-sm transition duration-200">
+                &larr; Back to Dashboard
+            </a>
+        </div>
     </div>
 </body>
-
 </html>
