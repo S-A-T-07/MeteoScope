@@ -12,6 +12,11 @@ def signup():
         email = request.form["email"]
         password = request.form["password"]
 
+        users = supabase_client.table("user").select("*").eq("email", email).execute()
+
+        if users.data:
+            return "❌ Error: Email already registered."
+
         try:
             # Create user in Supabase Auth
             user = supabase_client.auth.sign_up({"email": email, "password": password})
@@ -20,16 +25,17 @@ def signup():
                 supabase_client.table("user").insert(
                     {
                         "user_id": user.user.id,  # ✅ Correct column
+                        "email": email,
                         "name": name,
                     }
                 ).execute()
                 # print(f"user_id : {user.user.id}")
 
-            return redirect(url_for("auth.prefer"))
+            return redirect(url_for("user.prefer"))
         except Exception as e:
             return f"❌ Error creating account: {e}"
 
-    return render_template("signup.html")
+    return render_template("home/land.html")
 
 
 # Login route
@@ -52,14 +58,11 @@ def login():
         except Exception as e:
             error_message = f"Login failed: {e}"
 
-    return render_template("login.html", error_message=error_message)
+    return render_template("home/land.html", error_message=error_message)
 
 
 # Logout route
 @auth_bp.route("/logout")
 def logout():
     session.pop("user", None)
-    return redirect(url_for("index"))
-
-
-# Create_Event route
+    return redirect(url_for("auth.login"))
