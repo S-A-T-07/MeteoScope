@@ -47,43 +47,40 @@ def login():
             user = supabase_client.auth.sign_in_with_password(
                 {"email": email, "password": password}
             )
-            session["user"] = user.user.dict()  # Store user session
-            # ✅ Redirect to prefer after login
-            return redirect(url_for("user.dashboard"))
+            if user.user is None:
+                # Handle invalid credentials
+                error_message = "Login failed: Invalid login credentials"
+            else:
+                session["user"] = user.user.dict()  # Store user session
+                # ✅ Redirect to prefer after login
+                return redirect(url_for("user.dashboard"))
         except Exception as e:
             return f"Login failed: {e}"
 
     return render_template("login.html")
 
 
-@auth_bp.route("/prefer", methods=["GET", "POST"])
-def prefer():
-    if "user" not in session:
-        return redirect(url_for("auth.login"))
-
-    message = None
+@auth_bp.route("/login", methods=["GET", "POST"])
+def login():
+    error_message = None  # initialize here
     if request.method == "POST":
-        very_hot = request.form.get("very_hot")
-        very_cold = request.form.get("very_cold")
-        very_windy = request.form.get("very_windy")
-        very_wet = request.form.get("very_wet")
-
+        email = request.form["email"]
+        password = request.form["password"]
         try:
-            # Insert values into Supabase table
-            supabase_client.table("user").update(
-                {
-                    "very_hot": very_hot,
-                    "very_cold": very_cold,
-                    "very_windy": very_windy,
-                    "very_wet": very_wet,
-                    "created_at": datetime.utcnow().isoformat(),
-                }
-            ).eq("user_id", session["user"]["id"]).execute()
-            message = "✅ Values saved successfully!"
+            user = supabase_client.auth.sign_in_with_password(
+                {"email": email, "password": password}
+            )
+            if user.user is None:
+                # Invalid credentials
+                error_message = "Login failed: Invalid login credentials"
+            else:
+                session["user"] = user.user.dict()  # Store user session
+                return redirect(url_for("user.dashboard"))
         except Exception as e:
-            message = f"❌ Error saving values: {e}"
+            error_message = f"Login failed: {e}"
 
-    return render_template("prefer.html", message=message)
+    return render_template("login.html", error_message=error_message)
+
 
 
 # Logout route

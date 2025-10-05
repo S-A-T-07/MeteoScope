@@ -220,6 +220,11 @@
                 <h2 class="title-font text-4xl text-center mb-8 tracking-wider">
                   LOGIN
                 </h2>
+                {% if error_message %}
+              <div class="mb-4 bg-red-500 text-white px-4 py-2 rounded-md text-center shadow-md">
+                {{ error_message }}
+              </div>
+            {% endif %}
 
                 <form action="/auth/login" method="POST">
                   <div class="mb-6">
