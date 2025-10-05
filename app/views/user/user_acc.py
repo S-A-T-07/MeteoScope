@@ -11,7 +11,7 @@ def dashboard():
     return render_template("dashboard.html", user=session["user"])
 
 
-@app.route("/prefer", methods=["GET", "POST"])
+@user_bp.route("/prefer", methods=["GET", "POST"])
 def prefer():
     if "user" not in session:
         return redirect(url_for("login"))
