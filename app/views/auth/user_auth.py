@@ -1,5 +1,3 @@
-from datetime import datetime
-
 from flask import Blueprint, redirect, render_template, request, session, url_for
 
 from app.supabase.supabase_client import supabase_client
@@ -35,7 +33,6 @@ def signup():
 
 
 # Login route
-
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     error_message = None  # initialize here
@@ -56,6 +53,7 @@ def login():
             error_message = f"Login failed: {e}"
 
     return render_template("login.html", error_message=error_message)
+
 
 # Logout route
 @auth_bp.route("/logout")
