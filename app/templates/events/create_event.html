@@ -139,12 +139,10 @@
             class="w-full px-4 py-3 bg-white/60 border border-white/50 rounded-lg focus:ring-primary-accent focus:border-primary-accent transition duration-300 appearance-none focus:outline-none text-dark-purple cursor-pointer shadow-inner"
           >
             <option value="" disabled selected>Select a Team</option>
-            <option value="just_me">Just Me</option>
-            <!-- Added 'Just Me' -->
-            <option value="marketing">Marketing Department</option>
-            <option value="engineering">Engineering R&D</option>
-            <option value="sales">Global Sales Force</option>
-            <option value="hr">Human Resources</option>
+            <option value="{{user_id}}">Just Me</option>
+            {% for team in teams %}
+            <option value="{{ team.id }}">{{ team.team_name }}</option>
+            {% endfor %}
           </select>
         </div>
 

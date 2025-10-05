@@ -1,83 +1,136 @@
-<!DOCTYPE html>
+!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Team</title>
+    <!-- Load Tailwind CSS for utility classes -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configure Tailwind CSS with custom colors and font (Inter)
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    // Define colors based on the requested gradient
+                    colors: {
+                        'dark-purple': '#2c2c4a',
+                        'medium-gray': '#b6aec2',
+                        'warm-orange': '#f7bb7b',
+                        'primary-accent': '#5a5a8a', // Complementary color for buttons/links
+                    }
+                }
+            }
+        }
+    </script>
     <style>
+        /* Custom CSS for the full-screen gradient background and glass effect properties */
         body {
-            font-family: Arial, sans-serif;
-            background: #f4f6f8;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            /* Apply the requested background gradient */
+            background: linear-gradient(to bottom, 
+                #2c2c4a, /* dark-purple */
+                #b6aec2, /* medium-gray */
+                #f7bb7b  /* warm-orange */
+            );
+            background-attachment: fixed;
+            min-height: 100vh;
         }
 
-        .container {
-            background: white;
-            padding: 25px 35px;
-            border-radius: 12px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-            width: 350px;
-            text-align: center;
+        .glass-card {
+            /* Apply glassmorphism effect: high blur and transparency */
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px); /* For Safari support */
+            /* Ensure the card is scrollable on small screens if content overflows */
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+        
+        /* Custom styling to ensure the select arrow for single-select is correct. 
+           We disable the default appearance for the multi-select box below. */
+        select:not([multiple]) {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%235a5a8a'%3e%3cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1.5em 1.5em;
+            padding-right: 2.5rem;
         }
 
-        input[type="text"],
-        select {
-            width: 90%;
-            padding: 10px;
-            margin-bottom: 15px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-        }
-
-        input[type="submit"] {
-            background: #007bff;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-        }
-
-        input[type="submit"]:hover {
-            background: #0056b3;
-        }
-
-        .message {
-            margin-bottom: 15px;
-            color: green;
+        /* Hide the default appearance for the multiple select box */
+        select[multiple] {
+            appearance: none;
+            -moz-appearance: none;
+            -webkit-appearance: none;
+            background-image: none;
+            min-height: 150px; /* Give it enough height to show options */
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
 
-<body>
-    <div class="container">
-        <h2>Create Team</h2>
+<!-- Center the content using Tailwind flex classes -->
+<body class="font-sans flex justify-center items-center py-8">
+    
+    <!-- Main Container: Glassmorphism Card -->
+    <div class="glass-card w-full max-w-md p-8 sm:p-10 mx-4 
+                bg-white/20 border border-white/30 rounded-xl 
+                shadow-2xl text-center transform transition-all duration-500">
+        
+        <h2 class="text-3xl font-bold mb-8 text-dark-purple">Create New Team</h2>
 
-        {% if message %}
-        <div class="message">{{ message }}</div>
-        {% endif %}
+        <form method="POST" class="space-y-6">
+            
+            <!-- Team Name Field -->
+            <div>
+                <label for="team_name" class="block text-left text-sm font-semibold mb-2 text-dark-purple">
+                    Team Name
+                </label>
+                <input type="text" id="team_name" name="team_name" placeholder="E.g., Project Falcon" required
+                       class="w-full px-4 py-3 bg-white/60 border border-white/50 
+                              rounded-lg focus:ring-primary-accent focus:border-primary-accent 
+                              transition duration-300 placeholder-gray-600 focus:outline-none 
+                              text-dark-purple shadow-inner">
+            </div>
 
-        <form method="POST">
-            <label>Team Name:</label><br>
-            <input type="text" name="team_name" placeholder="Enter team name" required><br>
+            <!-- Select Users Field (Multiple Select) -->
+            <div>
+                <label for="user_ids" class="block text-left text-sm font-semibold mb-2 text-dark-purple">
+                    Select Team Members
+                </label>
+                <select id="user_ids" name="user_ids" multiple size="6" required
+                        class="w-full px-4 py-3 bg-white/60 border border-white/50 
+                               rounded-lg focus:ring-primary-accent focus:border-primary-accent 
+                               transition duration-300 focus:outline-none 
+                               text-dark-purple cursor-pointer shadow-inner">
+                    <!-- Mock User Data (Replacing templating logic) -->
+                    <option value="user1">Alice Johnson (ID: 1001)</option>
+                    <option value="user2">Bob Smith (ID: 1002)</option>
+                    <option value="user3">Charlie Day (ID: 1003)</option>
+                    <option value="user4">Dana Scully (ID: 1004)</option>
+                    <option value="user5">Erin Brock (ID: 1005)</option>
+                    <option value="user6">Frank Ocean (ID: 1006)</option>
+                </select>
+                <p class="text-xs text-gray-700 mt-2 text-left">
+                    Hold Ctrl (Windows) or Cmd (Mac) to select multiple users.
+                </p>
+            </div>
 
-            <label>Select Users:</label><br>
-            <select name="user_ids" multiple size="5" required>
-                {% for user in users %}
-                <option value="{{ user.user_id }}">{{ user.name }}</option>
-                {% endfor %}
-            </select>
-            <p><small>Hold Ctrl (Windows) or Cmd (Mac) to select multiple users</small></p>
-
-            </select><br>
-
-            <input type="submit" value="Create Team">
+            <!-- Submit Button -->
+            <button type="submit" 
+                    class="w-full mt-8 py-3 bg-primary-accent text-white 
+                           font-bold rounded-lg shadow-xl hover:bg-dark-purple 
+                           transition duration-300 transform active:scale-95">
+                Create Team
+            </button>
         </form>
-        <br><a href="/">🏠 Home</a>
+
+        <!-- Back Link -->
+        <div class="mt-8">
+            <a href="#" class="text-primary-accent hover:text-dark-purple font-semibold text-sm transition duration-200">
+                &larr; Back to Dashboard
+            </a>
+        </div>
     </div>
 </body>
-
 </html>
