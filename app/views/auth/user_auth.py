@@ -36,30 +36,6 @@ def signup():
 
 # Login route
 
-
-# Login route
-@auth_bp.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        email = request.form["email"]
-        password = request.form["password"]
-        try:
-            user = supabase_client.auth.sign_in_with_password(
-                {"email": email, "password": password}
-            )
-            if user.user is None:
-                # Handle invalid credentials
-                error_message = "Login failed: Invalid login credentials"
-            else:
-                session["user"] = user.user.dict()  # Store user session
-                # ✅ Redirect to prefer after login
-                return redirect(url_for("user.dashboard"))
-        except Exception as e:
-            return f"Login failed: {e}"
-
-    return render_template("login.html")
-
-
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
     error_message = None  # initialize here
@@ -80,8 +56,6 @@ def login():
             error_message = f"Login failed: {e}"
 
     return render_template("login.html", error_message=error_message)
-
-
 
 # Logout route
 @auth_bp.route("/logout")
