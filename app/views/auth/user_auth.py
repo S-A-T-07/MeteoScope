@@ -29,7 +29,7 @@ def signup():
         except Exception as e:
             return f"❌ Error creating account: {e}"
 
-    return render_template("signup.html")
+    return render_template("home/land.html")
 
 
 # Login route
@@ -52,11 +52,11 @@ def login():
         except Exception as e:
             error_message = f"Login failed: {e}"
 
-    return render_template("login.html", error_message=error_message)
+    return render_template("home/land.html", error_message=error_message)
 
 
 # Logout route
 @auth_bp.route("/logout")
 def logout():
     session.pop("user", None)
-    return redirect(url_for("index"))
+    return redirect(url_for("auth.login"))
