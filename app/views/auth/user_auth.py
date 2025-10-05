@@ -12,6 +12,11 @@ def signup():
         email = request.form["email"]
         password = request.form["password"]
 
+        users = supabase_client.table("user").select("*").eq("email", email).execute()
+
+        if users.data:
+            return "❌ Error: Email already registered."
+
         try:
             # Create user in Supabase Auth
             user = supabase_client.auth.sign_up({"email": email, "password": password})
