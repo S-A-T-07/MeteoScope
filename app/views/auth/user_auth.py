@@ -25,6 +25,7 @@ def signup():
                 supabase_client.table("user").insert(
                     {
                         "user_id": user.user.id,  # ✅ Correct column
+                        "email": email,
                         "name": name,
                     }
                 ).execute()
