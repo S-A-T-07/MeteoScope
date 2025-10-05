@@ -2,42 +2,10 @@ from flask import Blueprint, redirect, render_template, request, session, url_fo
 
 from app.supabase.supabase_client import supabase_client
 
-tasks_bp = Blueprint("tasks", __name__, url_prefix="/tasks")
+team_bp = Blueprint("team", __name__, url_prefix="/team")
 
 
-@tasks_bp.route("/create_event", methods=["GET", "POST"])
-def create_event():
-    if "user" not in session:
-        return redirect(url_for("login"))
-
-    if request.method == "POST":
-        event_name = request.form["event_name"]
-        user_id = session["user"]["id"]
-
-        try:
-            profile = (
-                supabase_client.table("user")
-                .select("name")
-                .eq("user_id", user_id)
-                .execute()
-            )
-            user_name = profile.data[0]["name"] if profile.data else "Unknown"
-
-            supabase_client.table("event").insert(
-                {"user_id": user_id, "event_name": event_name}
-            ).execute()
-
-            return "✅ Event created successfully! <a href='/auth/create_event'>Create another</a>"
-        except Exception as e:
-            return f"❌ Error creating event: {e}"
-
-    return render_template("create_event.html")
-
-
-# Create Team
-
-
-@tasks_bp.route("/create_team", methods=["GET", "POST"])
+@team_bp.route("/create_team", methods=["GET", "POST"])
 def create_team():
     if "user" not in session:
         return redirect(url_for("auth_bp.login"))
