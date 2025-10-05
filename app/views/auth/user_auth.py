@@ -25,7 +25,7 @@ def signup():
                 ).execute()
                 # print(f"user_id : {user.user.id}")
 
-            return redirect(url_for("auth.prefer"))
+            return redirect(url_for("user.prefer"))
         except Exception as e:
             return f"❌ Error creating account: {e}"
 
@@ -60,6 +60,3 @@ def login():
 def logout():
     session.pop("user", None)
     return redirect(url_for("index"))
-
-
-# Create_Event route
