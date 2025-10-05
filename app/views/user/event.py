@@ -10,22 +10,19 @@ def create_event():
     if "user" not in session:
         return redirect(url_for("login"))
 
+    # Fetch all teams for dropdown
+    teams = supabase_client.table("team").select(
+        "id, team_name").execute().data
+
     if request.method == "POST":
         event_name = request.form["event_name"]
         event_date = request.form["event_date"]
         event_location = request.form["event_location"]
-        event_select = request.form["event_select"]
+        # team_id = request.form["event_select"]  # team selected from dropdown
         user_id = session["user"]["id"]
 
-        data = {
-            "event_name": event_name,
-            "event_date": event_date,
-            "event_location": event_location,
-            "event_select": event_select,
-            "user_id": user_id,
-        }
-
         try:
+            # Fetch the logged-in user's name
             profile = (
                 supabase_client.table("user")
                 .select("name")
@@ -34,12 +31,17 @@ def create_event():
             )
             user_name = profile.data[0]["name"] if profile.data else "Unknown"
 
-            supabase_client.table("event").insert(
-                {"user_id": user_id, "event_name": event_name}
-            ).execute()
+            # Insert the event into Supabase
+            supabase_client.table("event").insert({
+                "event_name": event_name,
+                "event_date": event_date,
+                "event_location": event_location,
+                # "team_id": team_id,
+                "user_id": user_id,
+            }).execute()
 
-            return "✅ Event created successfully! <a href='/auth/create_event'>Create another</a>"
+            return render_template("create_event.html", teams=teams, message="✅ Event created successfully!")
         except Exception as e:
-            return f"❌ Error creating event: {e}"
+            return render_template("create_event.html", teams=teams, message=f"❌ Error creating event: {e}")
 
-    return render_template("create_event.html")
+    return render_template("create_event.html", teams=teams)
