@@ -3,7 +3,555 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Trip Dashboard: Mountain Retreat</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    />
+
+    <style>
+      /* CSS STYLES */
+      /* Custom font classes using the imported Google Fonts */
+      .title-font {
+        /* METEOSCOPE: Rubik Dirt */
+        font-family: "Rubik Dirt", sans-serif;
+        letter-spacing: 0.1em;
+      }
+
+      :root {
+        /* Define colors for easy maintenance */
+        --color-dark-purple: #2c2c4a;
+        --color-medium-gray: #b6aec2;
+        --color-warm-orange: #f7bb7b;
+        --color-text-light: #f4f4f9;
+        --color-text-dark: #333;
+        --color-card-bg: rgba(255, 255, 255, 0.9); /* Semi-transparent white */
+        --color-primary: #5a5a8a; /* A nice complement to the dark purple */
+      }
+
+      /* 1. Global & Background Styling */
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        /* Apply the main background gradient */
+        background: linear-gradient(
+          to bottom,
+          var(--color-dark-purple),
+          var(--color-medium-gray),
+          var(--color-warm-orange)
+        );
+        background-attachment: fixed;
+        min-height: 100vh;
+        color: var(--color-text-dark);
+      }
+
+      .dashboard-container {
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* 2. Sidebar Styling */
+      .sidebar {
+        width: 250px;
+        background-color: rgba(44, 44, 74, 0.95);
+        color: var(--color-text-light);
+        padding: 20px;
+        box-shadow: 2px 0 10px rgba(0, 0, 0, 0.3);
+        /* Fixed position for the sidebar */
+        position: fixed;
+        height: 100%;
+        z-index: 10;
+      }
+
+      .logo {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+
+      .sidebar nav ul {
+        list-style: none;
+      }
+
+      .sidebar nav i {
+        margin-right: 10px;
+      }
+
+      .sidebar nav a {
+        display: block;
+        padding: 12px 15px;
+        text-decoration: none;
+        color: var(--color-text-light);
+        border-radius: 6px;
+        transition: background-color 0.2s, color 0.2s;
+      }
+
+      .sidebar nav li.active a,
+      .sidebar nav a:hover {
+        background-color: var(--color-primary);
+        color: white;
+      }
+
+      /* 3. Main Content Area */
+      .main-content {
+        flex-grow: 1;
+        padding: 40px;
+        margin-left: 250px; /* Offset for the fixed sidebar */
+        overflow-y: auto;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 10px;
+        color: var(--color-dark-purple);
+      }
+
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .user-profile i {
+        font-size: 1.5rem;
+        color: var(--color-warm-orange);
+      }
+
+      /* 4. Content Grid and Cards */
+      .content-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        grid-gap: 25px;
+      }
+
+      .card {
+        background-color: var(--color-card-bg);
+        border-radius: 12px;
+        padding: 25px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(5px);
+      }
+
+      /* Hero Card Specific Styling */
+      .hero-card {
+        grid-column: 1 / 3;
+        color: var(--color-dark-purple);
+      }
+
+      .hero-card h2 {
+        font-size: 1.8rem;
+        margin-bottom: 15px;
+      }
+
+      .date-info {
+        display: flex;
+        gap: 40px;
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+      }
+
+      .countdown-display {
+        text-align: center;
+        background-color: rgba(255, 255, 255, 0.5);
+        padding: 15px;
+        border-radius: 8px;
+      }
+
+      #countdown {
+        display: block;
+        font-size: 3rem;
+        font-weight: 700;
+        color: var(--color-primary);
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      /* Team Card Specific Styling */
+      .avatars {
+        display: flex;
+        margin: 15px 0 20px;
+      }
+
+      .avatar {
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        border: 3px solid var(--color-card-bg);
+        margin-left: -10px;
+        object-fit: cover;
+        transition: transform 0.2s;
+      }
+
+      .avatar:first-child {
+        margin-left: 0;
+      }
+
+      .avatar:hover {
+        transform: translateY(-3px);
+        z-index: 10;
+      }
+
+      .avatar.more {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--color-primary);
+        color: white;
+        font-size: 0.8rem;
+        font-weight: bold;
+      }
+
+      /* Events Card Specific Styling */
+      .event-list {
+        list-style: none;
+        margin: 15px 0 20px;
+      }
+
+      .event-list li {
+        display: flex;
+        padding: 8px 0;
+        border-bottom: 1px solid #eee;
+      }
+
+      .event-list li:last-child {
+        border-bottom: none;
+      }
+
+      .time {
+        font-weight: bold;
+        width: 80px;
+        color: var(--color-primary);
+      }
+
+      .event-detail {
+        flex-grow: 1;
+      }
+
+      /* Status Card Specific Styling */
+      .status-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .weather-info {
+        display: flex;
+        align-items: center;
+        margin: 15px 0;
+        gap: 10px;
+      }
+
+      .weather-info .icon {
+        font-size: 3rem;
+        color: var(--color-warm-orange);
+      }
+
+      .weather-info .temp {
+        font-size: 1.8rem;
+        font-weight: bold;
+        color: var(--color-dark-purple);
+      }
+
+      .forecast {
+        color: #666;
+        font-style: italic;
+      }
+
+      /* Buttons */
+      .btn-primary,
+      .btn-secondary {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-weight: bold;
+        transition: background-color 0.2s, transform 0.1s;
+      }
+
+      .btn-primary {
+        background-color: var(--color-primary);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background-color: #4a4a75;
+      }
+
+      .btn-secondary {
+        background-color: #ddd;
+        color: var(--color-text-dark);
+      }
+
+      .btn-secondary:hover {
+        background-color: #ccc;
+      }
+
+      /* 5. Responsiveness */
+      @media (max-width: 1024px) {
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .hero-card {
+          grid-column: 1 / 2;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .dashboard-container {
+          flex-direction: column;
+        }
+
+        .sidebar {
+          position: static; /* Change fixed to static on mobile */
+          width: 100%;
+          height: auto;
+          padding: 10px 0;
+        }
+
+        .main-content {
+          margin-left: 0; /* Remove offset */
+          padding: 20px;
+        }
+
+        .logo {
+          display: none;
+        }
+
+        .sidebar nav ul {
+          display: flex;
+          justify-content: space-around;
+          gap: 5px;
+        }
+
+        .sidebar nav li {
+          margin: 0;
+          flex-grow: 1;
+          text-align: center;
+        }
+
+        .sidebar nav a {
+          padding: 8px 10px;
+        }
+
+        .sidebar nav span {
+          /* Hide the text links on mobile, only show icons */
+          display: none;
+        }
+
+        .sidebar nav i {
+          margin: 0;
+          font-size: 1.2rem;
+        }
+
+        .header h1 {
+          font-size: 1.5rem;
+        }
+
+        .date-info {
+          flex-direction: column;
+          gap: 10px;
+        }
+      }
+    </style>
   </head>
-  <body></body>
+  <body>
+    <div class="dashboard-container">
+      <aside class="sidebar">
+        <div class="flex flex-col items-center mb-10 p-4">
+          <div class="w-16 h-16 mb-3">
+            <img
+              src="{{ url_for('static', filename='img/LOGO.png') }}"
+              alt="Meteoscope Logo"
+              class="w-full h-full object-cover rounded-full"
+            />
+          </div>
+
+          <h1
+            class="title-font text-4xl md:text-4xl text-white tracking-wider header-title text-center"
+            style="
+              text-shadow: 0 4px 6px rgba(0, 0, 0, 0.8),
+                0 1px 3px rgba(0, 0, 0, 0.6);
+            "
+          >
+            METEOSCOPE
+          </h1>
+        </div>
+
+        <nav>
+          <ul>
+            <li class="active">
+              <a href="#"
+                ><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="fas fa-calendar-alt"></i>
+                <span>Events & Itinerary</span></a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="fas fa-users"></i> <span>Team & Guests</span></a
+              >
+            </li>
+            <li>
+              <a href="#"
+                ><i class="fas fa-file-alt"></i> <span>Documents</span></a
+              >
+            </li>
+            <li>
+              <a href="#"><i class="fas fa-cog"></i> <span>Settings</span></a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <main class="main-content">
+        <header class="header">
+          <h1>Mountain Retreat 2026</h1>
+          <div class="user-profile">
+            <span>Welcome, Traveler!</span>
+            <i class="fas fa-user-circle"></i>
+          </div>
+        </header>
+
+        <div class="content-grid">
+          <div class="card hero-card">
+            <h2>Weekend in the Rockies!</h2>
+            <div class="date-info">
+              <div>
+                <p><strong>Departure:</strong> 2026-08-15 at 10:00 AM</p>
+              </div>
+              <div>
+                <p><strong>Return:</strong> 2026-08-17 at 05:00 PM</p>
+              </div>
+            </div>
+            <div class="countdown-display">
+              <span id="countdown">Calculating...</span>
+              <p class="subtitle">Days/Hours/Minutes to Go</p>
+            </div>
+          </div>
+
+          <div class="card team-card">
+            <h3>The Squad (14 Confirmed)</h3>
+            <div class="avatars">
+              <img
+                src="https://i.pravatar.cc/150?img=1"
+                alt="User 1"
+                class="avatar"
+              />
+              <img
+                src="https://i.pravatar.cc/150?img=2"
+                alt="User 2"
+                class="avatar"
+              />
+              <img
+                src="https://i.pravatar.cc/150?img=3"
+                alt="User 3"
+                class="avatar"
+              />
+              <img
+                src="https://i.pravatar.cc/150?img=4"
+                alt="User 4"
+                class="avatar"
+              />
+              <span class="avatar more">+10</span>
+            </div>
+            <button class="btn-secondary">View All Team</button>
+          </div>
+
+          <div class="card events-card">
+            <h3>Next On The Itinerary</h3>
+            <ul class="event-list">
+              <li>
+                <span class="time">8:00 AM</span>
+                <span class="event-detail"
+                  >Breakfast Buffet @ Lodge Dining Hall</span
+                >
+              </li>
+              <li>
+                <span class="time">10:00 AM</span>
+                <span class="event-detail"
+                  >Hiking Trail Meetup @ Trailhead A</span
+                >
+              </li>
+              <li>
+                <span class="time">1:00 PM</span>
+                <span class="event-detail">Lunch Break & Picnic Prep</span>
+              </li>
+            </ul>
+            <button class="btn-primary">Full Itinerary</button>
+          </div>
+
+          <div class="card status-card">
+            <h3>Current Destination Status</h3>
+            <div class="weather-info">
+              <i class="fas fa-cloud-sun icon"></i>
+              <div class="temp">$15^{\circ}\text{C} / 25^{\circ}\text{C}$</div>
+            </div>
+            <p class="forecast">Partly Cloudy. Ideal hiking weather!</p>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script>
+      // JAVASCRIPT LOGIC
+      // The target date and time of the event (August 15th, 2026, 10:00 AM)
+      const eventDate = new Date("2026-08-15T10:00:00").getTime();
+      const countdownElement = document.getElementById("countdown");
+
+      function updateCountdown() {
+        // Get today's date and time
+        const now = new Date().getTime();
+
+        // Find the distance between now and the event date
+        const distance = eventDate - now;
+
+        // Time calculations for days, hours, minutes, and seconds
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        );
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        // const seconds = Math.floor((distance % (1000 * 60)) / 1000); // We're not using seconds
+
+        // If the event has already passed
+        if (distance < 0) {
+          clearInterval(timerInterval);
+          countdownElement.innerHTML = "🎉 Trip is UNDERWAY!";
+          return;
+        }
+
+        // Display the result
+        countdownElement.innerHTML = `${days}D : ${hours}H : ${minutes}M`;
+      }
+
+      // Update the countdown immediately on page load
+      updateCountdown();
+
+      // Update the countdown every minute (60,000 milliseconds)
+      const timerInterval = setInterval(updateCountdown, 60000);
+    </script>
+  </body>
 </html>
